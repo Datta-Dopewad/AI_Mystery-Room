@@ -35,5 +35,5 @@ The gameplay API is under `/api/cases`: `POST /api/cases`, `GET /api/cases/:id`,
 
 ## Deployment
 
-The target is a Node-compatible API host, MongoDB Atlas, and Vercel for the client. Configure `GEMINI_API_KEY`, `MONGODB_URI`, `GEMINI_MODEL`, and `CLIENT_ORIGIN` on the API host. Configure `VITE_API_BASE_URL` as the deployed API origin on Vercel. Use HTTPS and review authentication, CORS, rate limits, and data retention before production. Deployment is not verified until the full create → investigate → hint → accuse → results flow works on the live site.
+See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for the step-by-step walkthrough using Vercel, Render, MongoDB Atlas, and Gemini. The repository includes a Render Blueprint and Vercel SPA rewrite. Deployment is not verified until the full create → investigate → hint → accuse → results flow works on the live site.
 

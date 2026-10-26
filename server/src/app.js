@@ -9,8 +9,16 @@ import { env } from './config/env.js';
 import { createCase, publicCase } from './services/mystery.service.js';
 
 const app = express();
+if (env.nodeEnv === 'production') app.set('trust proxy', 1);
 app.use(helmet());
-app.use(cors({ origin: env.clientOrigin, allowedHeaders: ['Content-Type', 'X-Session-Id'], methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] }));
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || env.clientOrigins.includes(origin.replace(/\/$/, ''))) return callback(null, true);
+    return callback(new Error('Origin is not allowed by CORS.'));
+  },
+  allowedHeaders: ['Content-Type', 'X-Session-Id'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+}));
 app.use(express.json({ limit: '32kb' }));
 app.use('/api/cases', rateLimit({ windowMs: 60 * 60 * 1000, limit: 20, standardHeaders: true, legacyHeaders: false }));
 app.use('/api/v1/mysteries', rateLimit({ windowMs: 60 * 60 * 1000, limit: 20, standardHeaders: true, legacyHeaders: false }));
