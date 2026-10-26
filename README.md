@@ -35,5 +35,5 @@ The gameplay API is under `/api/cases`: `POST /api/cases`, `GET /api/cases/:id`,
 
 ## Deployment
 
-See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for the step-by-step walkthrough using Vercel, Render, MongoDB Atlas, and Gemini. The repository includes a Render Blueprint and Vercel SPA rewrite. Deployment is not verified until the full create → investigate → hint → accuse → results flow works on the live site.
+See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for deployment walkthroughs using Vercel Services or separate Vercel + Render deployments, with MongoDB Atlas and Gemini. Deployment is not verified until the full create → investigate → hint → accuse → results flow works on the live site.
 

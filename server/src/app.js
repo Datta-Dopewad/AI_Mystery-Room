@@ -14,7 +14,7 @@ app.use(helmet());
 app.use(cors({
   origin(origin, callback) {
     if (!origin || env.clientOrigins.includes(origin.replace(/\/$/, ''))) return callback(null, true);
-    return callback(new Error('Origin is not allowed by CORS.'));
+    return callback(null, false);
   },
   allowedHeaders: ['Content-Type', 'X-Session-Id'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

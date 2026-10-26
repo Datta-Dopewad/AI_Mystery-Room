@@ -2,6 +2,25 @@
 
 This walkthrough deploys the React/Vite frontend to Vercel and the Express API to Render, with MongoDB Atlas for storage and Gemini for case generation. It assumes the repository is available on GitHub.
 
+The repository also includes a root `vercel.json` for deploying both apps as Vercel Services under one domain. That feature is in Beta. Use the next section if your Vercel project has the **Services** framework option; otherwise use the separate Vercel + Render walkthrough below.
+
+## Option A: Deploy both apps in one Vercel project
+
+1. Create a MongoDB Atlas Free cluster and database user, then copy the driver connection URI. Create a Gemini API key in Google AI Studio.
+2. In Vercel, import `Datta-Dopewad/AI_Mystery-Room`. Keep the project root at the repository root so Vercel can read `vercel.json` and both app folders.
+3. In **Settings → Build and Deployment**, choose **Services** as the Framework Preset if it is available for your account. The Vercel Services feature is in Beta. The root config declares a Vite frontend and Express API; it routes `/api/...` to the API and all other paths to the frontend.
+4. In Vercel **Settings → Environment Variables**, add `MONGODB_URI`, `GEMINI_API_KEY`, and `GEMINI_MODEL=gemini-3.8-flash` for Production (and Preview if desired). Do not set a `VITE_` prefix on secrets. The frontend uses same-origin `/api` calls on this deployment.
+5. Configure Atlas **Network Access**. Vercel Hobby uses dynamic outbound IPs; Vercel Static IPs require a paid plan. For a personal demo, Atlas can be configured to accept connections from any IP (`0.0.0.0/0`) while using a strong, restricted database user and password. This broadens network access, so for a tighter IP allowlist use Option B (Render publishes its service outbound IP ranges) or a plan/provider that gives you static egress.
+6. Deploy from Vercel and open `/api/health` on the resulting Vercel domain. It should return `status: "ok"`. Then test creating a case and completing an investigation.
+
+The API function is configured for up to 60 seconds to allow case generation. Vercel Hobby supports up to 60 seconds without Fluid Compute; with Fluid Compute, Hobby may support longer durations. See [Vercel function duration limits](https://vercel.com/docs/functions/configuring-functions/duration). If the generation request times out or Services isn't available in the account, use Option B.
+
+Vercel references: [Services](https://vercel.com/docs/services), [Express on Vercel](https://vercel.com/docs/frameworks/backend/express), [Vercel outbound IPs](https://vercel.com/kb/guide/how-to-allowlist-deployment-ip-address), and [Atlas IP access lists](https://www.mongodb.com/docs/atlas/security/ip-access-list/).
+
+## Option B: Deploy the frontend and API separately
+
+Follow this option if you want a separately hosted API or a narrower Atlas IP allowlist. The remaining steps below deploy Vite to Vercel and the API to Render.
+
 ## 1. Prepare the required accounts and values
 
 You will need GitHub, Vercel, Render, MongoDB Atlas, and a Google Gemini API key. Keep the Gemini key and database URI private. They belong only in Render's server environment variables; never add them to the client, commit them, or prefix them with `VITE_`.
