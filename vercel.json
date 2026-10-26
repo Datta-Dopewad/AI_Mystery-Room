@@ -12,7 +12,7 @@
       "root": "server",
       "framework": "express",
       "functions": {
-        "src/server.js": { "maxDuration": 60 }
+        "**/*.js": { "maxDuration": 105 }
       }
     }
   },
